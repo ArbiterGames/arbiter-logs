@@ -85,7 +85,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
 )
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, 'templates')
+    os.path.join(PROJECT_ROOT, 'templates'),
 )
 
 LOGGING = {
