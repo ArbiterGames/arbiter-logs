@@ -26,7 +26,7 @@ Server for dumping json logs from Arbiter clients
 ```
 
 - This will save the json blob as an `Entry` in the Arbiter Logs database.
-- View all entries here: (http://logs.arbiter.me/admin/logs/entry/)[http://logs.arbiter.me/admin/logs/entry/]
+- View all entries here: [http://logs.arbiter.me/admin/logs/entry/](http://logs.arbiter.me/admin/logs/entry/)
 
 ## Roadmap
 
