@@ -9,7 +9,7 @@ Server for dumping json logs from Arbiter clients
 
 ```objective-c
 
-    NSDictionary *exampleJSONBlob = @{@"example_key", @"example value"};
+    NSDictionary *exampleJSONBlob = @{@"data", @{"example_key": [1, 2, 3, 4]}};
     NSError *error = nil;
     NSString *url = @"http://logs.arbiter.me/report";
     NSData *paramsData = [NSJSONSerialization dataWithJSONObject:exampleJSONBlob
