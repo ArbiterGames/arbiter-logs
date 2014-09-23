@@ -8,26 +8,29 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+import dj_database_url
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
+PROJECT_ROOT = os.path.abspath(os.path.split(os.path.split(__file__)[0])[0])
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = '9h7d@@*1&^w3rj!s99(iwt44fm(*w6&-h(x^fso%$tu=l7+b$s'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 TEMPLATE_DEBUG = True
+IS_DEV = os.environ['ENVIRONMENT'] == 'dev'
+IS_STAGING = os.environ['ENVIRONMENT'] == 'staging'
+IS_PRODUCTION = os.environ['ENVIRONMENT'] == 'production'
 
-ALLOWED_HOSTS = []
+if IS_DEV:
+    URL_ORIGIN = 'http://localhost:5000'
+    DATABASE_URL = 'postgres://postgres@localhost/arbiterlogs'
 
+if IS_STAGING:
+    DATABASE_URL = os.environ['DATABASE_URL']
 
-# Application definition
+if IS_PRODUCTION:
+    DEBUG = False
+    DATABASE_URL = os.environ['DATABASE_URL']
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -49,52 +52,18 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'logs.urls'
-
 WSGI_APPLICATION = 'logs.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.7/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
+DATABASES = {
+    'default': dj_database_url.config(default=DATABASE_URL)
+}
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.7/howto/static-files/
-
-STATIC_URL = '/static/'
-
-# Parse database configuration from $DATABASE_URL
-import dj_database_url
-DATABASES['default'] = dj_database_url.config()
-
-# Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# Allow all host headers
-ALLOWED_HOSTS = ['*']
-
-# Static asset configuration
-import os
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 
