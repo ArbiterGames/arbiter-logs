@@ -29,7 +29,7 @@ if IS_STAGING:
     DATABASE_URL = os.environ['DATABASE_URL']
 
 if IS_PRODUCTION:
-    DEBUG = False
+    # DEBUG = False
     DATABASE_URL = os.environ['DATABASE_URL']
 
 INSTALLED_APPS = (
