@@ -16,7 +16,7 @@ PROJECT_ROOT = os.path.abspath(os.path.split(os.path.split(__file__)[0])[0])
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = '9h7d@@*1&^w3rj!s99(iwt44fm(*w6&-h(x^fso%$tu=l7+b$s'
 DEBUG = True
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 IS_DEV = os.environ['ENVIRONMENT'] == 'dev'
 IS_STAGING = os.environ['ENVIRONMENT'] == 'staging'
 IS_PRODUCTION = os.environ['ENVIRONMENT'] == 'production'
@@ -70,3 +70,79 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.request',
+    'django.core.context_processors.debug',
+)
+TEMPLATE_DIRS = (
+    os.path.join(PROJECT_ROOT, 'templates')
+)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s %(message)s',
+            'datefmt': '%H:%M:%S',
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'WARN',
+        },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'WARN',
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'WARN',
+            'propagate': False,
+        },
+        'gunicorn.access': {
+            'level': 'WARN',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'gunicorn.error': {
+            'level': 'WARN',
+            'handlers': ['console'],
+            'propagate': True,
+        },
+        '': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        }
+    }
+}
